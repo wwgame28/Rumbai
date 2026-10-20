@@ -59,22 +59,27 @@ class IdbBackend implements Backend {
   get<T>(store: StoreName, key: string) {
     return this.db.get(store, key) as Promise<T | undefined>;
   }
+  // Writes resolve only when the transaction commits, not when the request succeeds,
+  // so a reload right after saving cannot lose the change.
   async put(store: StoreName, value: unknown, key?: string) {
-    await this.db.put(store, value, key);
+    const tx = this.db.transaction(store, 'readwrite');
+    await Promise.all([tx.store.put(value, key), tx.done]);
   }
   async putMany(store: StoreName, values: unknown[]) {
     const tx = this.db.transaction(store, 'readwrite');
     await Promise.all([...values.map((v) => tx.store.put(v)), tx.done]);
   }
   async delete(store: StoreName, key: string) {
-    await this.db.delete(store, key);
+    const tx = this.db.transaction(store, 'readwrite');
+    await Promise.all([tx.store.delete(key), tx.done]);
   }
   async deleteMany(store: StoreName, keys: string[]) {
     const tx = this.db.transaction(store, 'readwrite');
     await Promise.all([...keys.map((k) => tx.store.delete(k)), tx.done]);
   }
   async clear(store: StoreName) {
-    await this.db.clear(store);
+    const tx = this.db.transaction(store, 'readwrite');
+    await Promise.all([tx.store.clear(), tx.done]);
   }
 }
 

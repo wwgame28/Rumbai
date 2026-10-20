@@ -61,3 +61,11 @@ describe('stripMarkdown', () => {
     assert.equal(stripMarkdown('# Заголовок\nОбсудить **бюджет** и [ссылку](https://x.y)'), 'Заголовок\nОбсудить бюджет и ссылку');
   });
 });
+
+describe('HTML import', () => {
+  test('reduces markup to text without scripts, handlers or entities', async () => {
+    const { extractText } = await import('../files/importer.ts');
+    const out = extractText('<h1>Заголовок</h1><script>alert(1)</script><img src=x onerror="pwn()"><p>Текст &amp; ещё&nbsp;&#1105;</p>', 'html');
+    assert.equal(out, 'Заголовок\nТекст & ещё ё');
+  });
+});

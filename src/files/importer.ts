@@ -38,15 +38,31 @@ function readWithProgress(file: File, onProgress: (p: number) => void): Promise<
   });
 }
 
-/** Extracts readable text. HTML is parsed inertly (no scripts run, no resources load) and reduced to text. */
+const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', laquo: '«', raquo: '»', mdash: '—', ndash: '–', hellip: '…' };
+
+function decodeEntities(s: string): string {
+  return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e: string) => {
+    if (e[0] === '#') {
+      const code = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : '';
+    }
+    return ENTITIES[e.toLowerCase()] ?? m;
+  });
+}
+
+/**
+ * Extracts readable text. HTML is reduced to text with string operations only:
+ * untrusted markup is never parsed into a DOM, so nothing in it can load or run.
+ */
 export function extractText(raw: string, ext: string): string {
   if (HTML_EXT.has(ext)) {
-    const doc = new DOMParser().parseFromString(raw, 'text/html');
-    doc.querySelectorAll('script,style,noscript,template').forEach((n) => n.remove());
-    // The parsed document is never rendered, so innerText has no layout: add line breaks after blocks ourselves.
-    doc.querySelectorAll('br').forEach((n) => n.replaceWith('\n'));
-    doc.querySelectorAll('p,div,li,tr,h1,h2,h3,h4,h5,h6,section,article,header,footer,blockquote,pre,table').forEach((n) => n.append('\n'));
-    return (doc.body?.textContent ?? '').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    const text = raw
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/<(script|style|noscript|template|head)\b[\s\S]*?<\/\1\s*>/gi, '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/(p|div|li|tr|h[1-6]|section|article|header|footer|blockquote|pre|table|ul|ol)\s*>/gi, '\n')
+      .replace(/<[^>]*>/g, '');
+    return decodeEntities(text).replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
   }
   // Strip NUL bytes, which some exporters leave in text files.
   // eslint-disable-next-line no-control-regex
