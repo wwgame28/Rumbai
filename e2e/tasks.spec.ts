@@ -48,6 +48,9 @@ test('create, complete with undo, edit, delete and persist tasks', async ({ page
   const editor = page.getByRole('dialog', { name: 'Задача' });
   await editor.getByLabel('Название').fill('Купить продукты на неделю');
   await editor.getByRole('button', { name: 'Сохранить' }).click();
+  // The list updates instantly, but the sheet closes only after IndexedDB commits.
+  // Reloading before that would abort the write, so wait like a user would.
+  await expect(editor).toBeHidden();
   await expect(page.getByText('Купить продукты на неделю')).toBeVisible();
 
   // Persist across reload
