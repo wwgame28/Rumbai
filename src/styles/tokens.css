@@ -1,0 +1,158 @@
+/* RUMBAI design tokens. Components read only semantic tokens, never raw colors. */
+:root {
+  color-scheme: dark;
+
+  /* Palette (raw) */
+  --midnight-950: #05070f;
+  --midnight-900: #080b18;
+  --navy-850: #0d1226;
+  --navy-800: #121933;
+  --navy-700: #1b2445;
+  --violet-500: #8b6cff;
+  --violet-400: #a48dff;
+  --blue-500: #3d7bff;
+  --cyan-400: #4fd8f0;
+  --magenta-500: #e055b8;
+  --green-400: #45d39a;
+  --amber-400: #f5b94a;
+  --red-400: #ff6b7d;
+
+  /* Semantic surfaces */
+  --bg: var(--midnight-950);
+  --bg-ambient-1: rgb(139 108 255 / 0.16);
+  --bg-ambient-2: rgb(61 123 255 / 0.12);
+  --bg-ambient-3: rgb(79 216 240 / 0.06);
+  --surface-1: rgb(18 25 51 / 0.72);
+  --surface-2: rgb(27 36 69 / 0.78);
+  --surface-solid: var(--navy-850);
+  --surface-raised: var(--navy-800);
+  --glass: rgb(16 22 46 / 0.62);
+  --glass-strong: rgb(12 17 36 / 0.86);
+  --bar: rgb(8 11 24 / 0.94);
+  --border: rgb(164 178 255 / 0.12);
+  --border-strong: rgb(164 178 255 / 0.22);
+  --overlay: rgb(3 5 12 / 0.62);
+
+  /* Text */
+  --text: #eef1ff;
+  --text-secondary: #a7b0d4;
+  --text-tertiary: #7b84a8;
+  --text-on-accent: #ffffff;
+
+  /* Accents */
+  --accent: var(--violet-500);
+  --accent-strong: var(--violet-400);
+  --accent-soft: rgb(139 108 255 / 0.16);
+  --accent-2: var(--blue-500);
+  --accent-3: var(--cyan-400);
+  --accent-4: var(--magenta-500);
+  --accent-gradient: linear-gradient(135deg, var(--violet-500) 0%, var(--blue-500) 60%, var(--cyan-400) 120%);
+
+  /* Status */
+  --success: var(--green-400);
+  --success-soft: rgb(69 211 154 / 0.14);
+  --warning: var(--amber-400);
+  --warning-soft: rgb(245 185 74 / 0.14);
+  --danger: var(--red-400);
+  --danger-soft: rgb(255 107 125 / 0.14);
+  --info: var(--cyan-400);
+  --info-soft: rgb(79 216 240 / 0.12);
+  --local: var(--green-400);
+  --cloud: var(--amber-400);
+
+  /* Focus */
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--cyan-400);
+
+  /* Typography */
+  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: 1.0625rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: clamp(1.5rem, 1.25rem + 1.2vw, 1.875rem);
+  --lh-tight: 1.2;
+  --lh-normal: 1.45;
+  --fw-regular: 420;
+  --fw-medium: 540;
+  --fw-semibold: 620;
+  --fw-bold: 700;
+  --tracking-tight: -0.015em;
+
+  /* Spacing (4px scale) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+
+  /* Radii */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 26px;
+  --r-pill: 999px;
+
+  /* Elevation */
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px rgb(0 0 0 / 0.28);
+  --shadow-2: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 48px rgb(0 0 0 / 0.42);
+  --blur: 18px;
+
+  /* Layout */
+  --tap: 44px;
+  --nav-h: 64px;
+  --header-h: 56px;
+  --content-max: 760px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
+  /* Motion (CSS side; JS springs live in src/motion/presets.ts) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur-med: 240ms;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f5fb;
+  --bg-ambient-1: rgb(139 108 255 / 0.14);
+  --bg-ambient-2: rgb(61 123 255 / 0.1);
+  --bg-ambient-3: rgb(79 216 240 / 0.08);
+  --surface-1: rgb(255 255 255 / 0.78);
+  --surface-2: rgb(255 255 255 / 0.92);
+  --surface-solid: #ffffff;
+  --surface-raised: #ffffff;
+  --glass: rgb(255 255 255 / 0.7);
+  --glass-strong: rgb(250 251 255 / 0.9);
+  --bar: rgb(248 249 253 / 0.95);
+  --border: rgb(30 40 90 / 0.1);
+  --border-strong: rgb(30 40 90 / 0.18);
+  --overlay: rgb(20 24 50 / 0.36);
+  --text: #121530;
+  --text-secondary: #4b5275;
+  --text-tertiary: #6c7394;
+  --accent: #6b4dff;
+  --accent-strong: #5636f0;
+  --accent-soft: rgb(107 77 255 / 0.12);
+  --accent-2: #2563eb;
+  --accent-3: #0891b2;
+  --success: #0f9d6b;
+  --success-soft: rgb(15 157 107 / 0.12);
+  --warning: #b7791f;
+  --warning-soft: rgb(183 121 31 / 0.12);
+  --danger: #d6334a;
+  --danger-soft: rgb(214 51 74 / 0.1);
+  --info: #0e7490;
+  --info-soft: rgb(14 116 144 / 0.1);
+  --local: #0f9d6b;
+  --cloud: #b7791f;
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px #2563eb;
+  --shadow-1: 0 1px 2px rgb(20 24 60 / 0.06), 0 8px 24px rgb(20 24 60 / 0.06);
+  --shadow-2: 0 2px 6px rgb(20 24 60 / 0.08), 0 18px 48px rgb(20 24 60 / 0.12);
+}
